@@ -1,3 +1,61 @@
 <resources>
     <string name="app_name">Iot cloud platform</string>
+    <string name="welcome">欢迎使用智慧工厂应用</string>
+    <string name="version">版本 1.0</string>
+    <string name="cancel">取消</string>
+
+
+    <string name="environment">环境监控</string>
+    <string name="temperature_title">温度:</string>
+    <string name="humidity_title">湿度:</string>
+    <string name="light_title">光照:</string>
+    <string name="temperature">23.56</string>
+    <string name="humidity">79.32</string>
+    <string name="light">594.34</string>
+
+    <string name="breaking_area_monitoring">禁入区域监控</string>
+    <string name="breaking_value">正常</string>
+
+    <string name="device_control">设备控制</string>
+    <string name="ventilation_system">通风系统：</string>
+    <string name="air_conditioning_system">空调系统：</string>
+    <string name="lighting_system">照明系统：</string>
+    <string-array name="control_status">
+        <item>打开</item>
+        <item>关闭</item>
+        <item>自动</item>
+    </string-array>
+
+    <string name="setting">全局参数设置</string>
+    <string name="main_page">主界面</string>
+    <string name="global_params_setting">全局参数设置</string>
+
+    <string name="cloud_params_setting">物联网云平台参数设置:</string>
+    <string name="server_address">服务器地址:</string>
+    <string name="address_hint">192.168.0.12:9000</string>
+    <string name="cloud_project_label">云平台项目标识</string>
+    <string name="cloud_account">云平台账号:</string>
+    <string name="cloud_account_password">云平台密码:</string>
+    <string name="camera_address_setting">监控摄像设备参数设置</string>
+    <string name="camera_address">摄像头地址:</string>
+    <string name="camera_address_hint">192.168.0.1</string>
+    <string name="sensor_actuator_setting">传感器执行器参数设置</string>
+    <string name="temp_sensor_id">温度设备ID:</string>
+    <string name="temp_threshold_value">温度阈值:</string>
+    <string name="hum_sensor_id">湿度设备ID:</string>
+    <string name="hum_threshold_value">湿度阈值:</string>
+    <string name="light_sensor_id">光照设备ID:</string>
+    <string name="light_threshold_value">光照阈值:</string>
+    <string name="body_sensor_id">人体感应ID:</string>
+    <string name="light_controller_id">光照控制设备ID:</string>
+    <string name="ventilation_controller_id">通风控制设备ID:</string>
+    <string name="air_controller_id">空调控制设备ID:</string>
+    <string name="save_params">保存参数</string>
+
+    <string name="server_address_empty">请输入服务器地址！</string>
+    <string name="cloud_project_empty">请输入云平台项目标识！</string>
+    <string name="cloud_account_empty">请输入云平台账号！</string>
+    <string name="cloud_account_password_empty">请输入云平台密码！</string>
+    <string name="camera_address_empty">请输入摄像头地址！</string>
+    <string name="save_params_success">保存成功！</string>
 </resources>
