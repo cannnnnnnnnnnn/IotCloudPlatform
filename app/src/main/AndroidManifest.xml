@@ -3,6 +3,7 @@
     package="com.example.IotCloudPlatform">
 
     <application
+        android:name=".tools.SmartFactoryApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
@@ -11,7 +12,6 @@
         android:theme="@style/Theme.IotCloudPlatform">
         <activity
             android:name=".SettingActivity"
-            android:exported="false"
             android:label="@string/global_params_setting" />
         <activity
             android:name=".SplashActivity"
@@ -26,7 +26,6 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"
             android:label="@string/main_page" />
     </application>
 
