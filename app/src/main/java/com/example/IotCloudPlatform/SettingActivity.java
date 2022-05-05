@@ -39,10 +39,18 @@ public class SettingActivity extends AppCompatActivity {
     // 工厂类对象
     private SmartFactoryApplication smartFactory;
 
+    private String uid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        // 返回时数据检验
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            uid = bundle.getString("uid");
+        }
 
         // 保存信息控件
         submit = findViewById(R.id.btn_save_params);
@@ -133,8 +141,9 @@ public class SettingActivity extends AppCompatActivity {
             editor.commit();
             //显示保存成功提示信息
             showToast(R.string.save_params_success);
-            Intent intent = new Intent(SettingActivity.this, MainActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+//            startActivity(intent);
+            setResult(RESULT_OK, (new Intent()).setAction(uid));
             finish();
         }
 //        setResult(RESULT_OK, (new Intent()).setAction(uid));

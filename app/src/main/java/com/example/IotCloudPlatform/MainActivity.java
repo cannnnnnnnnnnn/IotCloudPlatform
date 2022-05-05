@@ -2,6 +2,7 @@ package com.example.IotCloudPlatform;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -10,6 +11,9 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,11 +35,19 @@ public class MainActivity extends AppCompatActivity {
     String tempValue;
     String humValue;
     String lightValue;
+    // 选项框
     private Spinner spVentilation;
     private Spinner spAc;
     private Spinner spLight;
+
     CloudHelper cloudHelper;
     SmartFactoryApplication smartFactory;
+
+    // 判断返回
+    static final private int GET_CODE = 0;
+
+    // 加载动画类
+    private Animation rotate;
 
     // 创建消息线程
     final Handler handler = new Handler() {
@@ -88,6 +100,126 @@ public class MainActivity extends AppCompatActivity {
         spLight = (Spinner) findViewById(R.id.sp_light_control);
         spLight.setAdapter(adapter);
 
+        // 风扇控制温度
+        spVentilation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view,
+                                       int position,
+                                       long id) {
+                Context c = getApplicationContext();
+                String address = smartFactory.getServerAddress();
+                String projLabel = smartFactory.getProjectLabel();
+                String controllerId = smartFactory.getVentilationControllerId().trim();
+                String status = spVentilation.getItemAtPosition(position).toString();
+                if (cloudHelper.getToken() != "") {
+                    switch (status) {
+                        case "打开":
+                            cloudHelper.onOff(c, address, projLabel, controllerId, 1);
+                            break;
+                        case "关闭":
+                            cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                            break;
+                        case "自动":
+                            if (Float.parseFloat(tempValue) > smartFactory.getTempThresholdValue()) {
+                                cloudHelper.onOff(c, address, projLabel, controllerId, 1);
+                            } else {
+                                cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                            }
+                            break;
+                        default:
+                            cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spVentilation.setSelection(1, true);
+
+        // 空调控制湿度
+        spAc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view,
+                                       int position,
+                                       long id) {
+                Context c = getApplicationContext();
+                String address = smartFactory.getServerAddress();
+                String projLabel = smartFactory.getProjectLabel();
+                String controllerId = smartFactory.getAirControllerId().trim();
+                String status = spAc.getItemAtPosition(position).toString();
+                if (cloudHelper.getToken() != "") {
+                    switch (status) {
+                        case "打开":
+                            cloudHelper.onOff(c, address, projLabel, controllerId, 1);
+                            break;
+                        case "关闭":
+                            cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                            break;
+                        case "自动":
+                            if (Float.parseFloat(humValue) > smartFactory.getHumThresholdValue()) {
+                                cloudHelper.onOff(c, address, projLabel, controllerId, 1);
+                            } else {
+                                cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                            }
+                            break;
+                        default:
+                            cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spAc.setSelection(1, true);
+
+        // 灯泡控制光照强度
+        spLight.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view,
+                                       int position,
+                                       long id) {
+                Context c = getApplicationContext();
+                String address = smartFactory.getServerAddress();
+                String projLabel = smartFactory.getProjectLabel();
+                String controllerId = smartFactory.getLightControllerId();
+                String status = spLight.getItemAtPosition(position).toString();
+                if (cloudHelper.getToken() != "") {
+                    switch (status) {
+                        case "打开":
+                            cloudHelper.onOff(c, address, projLabel, controllerId, 1);
+                            break;
+                        case "关闭":
+                            cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                            break;
+                        case "自动":
+                            if (Float.parseFloat(lightValue) < smartFactory.getLightThresholdValue()) {
+                                cloudHelper.onOff(c, address, projLabel, controllerId, 1);
+                            } else {
+                                cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                            }
+                            break;
+                        default:
+                            cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spLight.setSelection(1, true);
+
         // 加载数据
         loadCloudData();
 
@@ -128,7 +260,11 @@ public class MainActivity extends AppCompatActivity {
 //                intent.putExtra("tempValue", tempValue);
 //                intent.putExtra("humValue", humValue);
 //                intent.putExtra("lightValue", lightValue);
-                startActivity(intent);
+                // 实现数据的保存
+                Bundle bundle = new Bundle();
+                bundle.putString("uid", MainActivity.this.toString());
+                intent.putExtras(bundle);
+                startActivityForResult(intent, GET_CODE);
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
@@ -192,6 +328,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, 0, 5000);
+    }
+
+    // 当前Activity返回时调用该方法
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GET_CODE) {
+            if (resultCode == RESULT_OK) {
+                loadCloudData();
+            }
+        }
     }
 
 

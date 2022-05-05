@@ -265,7 +265,7 @@
         android:layout_column="4"
         android:layout_columnSpan="4"
         android:ems="2"
-        android:text="13" />
+        android:text="zb" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -283,7 +283,7 @@
         android:layout_column="11"
         android:layout_columnSpan="4"
         android:ems="3"
-        android:text="14" />
+        android:text="ml" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -301,7 +301,7 @@
         android:layout_column="5"
         android:layout_columnSpan="2"
         android:ems="2"
-        android:text="15" />
+        android:text="mf1" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -319,7 +319,7 @@
         android:layout_column="11"
         android:layout_columnSpan="4"
         android:ems="3"
-        android:text="16" />
+        android:text="mf2" />
 
     <Button
         android:id="@+id/btn_save_params"
