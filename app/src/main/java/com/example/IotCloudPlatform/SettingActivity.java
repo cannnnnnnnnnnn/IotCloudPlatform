@@ -99,16 +99,16 @@ public class SettingActivity extends AppCompatActivity {
         smartFactory.setCloudAccount(cloudAccount.getText().toString().trim());
         smartFactory.setCloudAccountPassword(cloudAccountPassword.getText().toString().trim());
         smartFactory.setCameraAddress(cameraAddress.getText().toString().trim());
-        smartFactory.setTempSensorId(Integer.parseInt(tempSensorId.getText().toString().trim()));
+        smartFactory.setTempSensorId(tempSensorId.getText().toString().trim());
         smartFactory.setTempThresholdValue(Float.parseFloat(tempThresholdValue.getText().toString().trim()));
-        smartFactory.setHumSensorId(Integer.parseInt(humSensorId.getText().toString().trim()));
+        smartFactory.setHumSensorId(humSensorId.getText().toString().trim());
         smartFactory.setHumThresholdValue(Float.parseFloat(humThresholdValue.getText().toString().trim()));
-        smartFactory.setLightSensorId(Integer.parseInt(lightSensorId.getText().toString().trim()));
+        smartFactory.setLightSensorId(lightSensorId.getText().toString().trim());
         smartFactory.setLightThresholdValue(Float.parseFloat(lightThresholdValue.getText().toString().trim()));
-        smartFactory.setBodySensorId(Integer.parseInt(bodySensorId.getText().toString().trim()));
-        smartFactory.setLightControllerId(Integer.parseInt(lightControllerId.getText().toString().trim()));
-        smartFactory.setVentilationControllerId(Integer.parseInt(ventilationControllerId.getText().toString().trim()));
-        smartFactory.setAirControllerId(Integer.parseInt(airControllerId.getText().toString().trim()));
+        smartFactory.setBodySensorId(bodySensorId.getText().toString().trim());
+        smartFactory.setLightControllerId(lightControllerId.getText().toString().trim());
+        smartFactory.setVentilationControllerId(ventilationControllerId.getText().toString().trim());
+        smartFactory.setAirControllerId(airControllerId.getText().toString().trim());
 
         if (!checkInput(smartFactory)) {
             return;
@@ -120,16 +120,16 @@ public class SettingActivity extends AppCompatActivity {
             editor.putString("cloud_account", smartFactory.getCloudAccount());
             editor.putString("cloud_account_password", smartFactory.getCloudAccountPassword());
             editor.putString("camera_address", smartFactory.getCameraAddress());
-            editor.putInt("temp_sensor_id", smartFactory.getTempSensorId());
+            editor.putString("temp_sensor_id", smartFactory.getTempSensorId());
             editor.putFloat("temp_threshold_value", smartFactory.getTempThresholdValue());
-            editor.putInt("hum_sensor_id", smartFactory.getHumSensorId());
+            editor.putString("hum_sensor_id", smartFactory.getHumSensorId());
             editor.putFloat("hum_threshold_value", smartFactory.getTempThresholdValue());
-            editor.putInt("light_sensor_id", smartFactory.getLightSensorId());
+            editor.putString("light_sensor_id", smartFactory.getLightSensorId());
             editor.putFloat("light_threshold_value", smartFactory.getLightThresholdValue());
-            editor.putInt("body_sensor_id", smartFactory.getBodySensorId());
-            editor.putInt("light_controller_id", smartFactory.getLightControllerId());
-            editor.putInt("ventilation_controller_id", smartFactory.getVentilationControllerId());
-            editor.putInt("air_controller_id", smartFactory.getAirControllerId());
+            editor.putString("body_sensor_id", smartFactory.getBodySensorId());
+            editor.putString("light_controller_id", smartFactory.getLightControllerId());
+            editor.putString("ventilation_controller_id", smartFactory.getVentilationControllerId());
+            editor.putString("air_controller_id", smartFactory.getAirControllerId());
             editor.commit();
             //显示保存成功提示信息
             showToast(R.string.save_params_success);

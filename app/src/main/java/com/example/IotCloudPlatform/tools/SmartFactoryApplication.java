@@ -5,156 +5,156 @@ import android.app.Application;
 // 工具类负责存储变量
 public class SmartFactoryApplication extends Application {
 
-    // 信息获取
     private String serverAddress = "";
     private String projectLabel = "";
     private String cloudAccount = "";
     private String cloudAccountPassword = "";
     private String cameraAddress = "";
-    private int tempSensorId = 0;
+    private String tempSensorId = "";
     private float tempThresholdValue = 0;
-    private int humSensorId = 0;
+    private String humSensorId = "";
     private float humThresholdValue = 0;
-    private int lightSensorId = 0;
+    private String lightSensorId = "";
     private float lightThresholdValue = 0;
-    private int bodySensorId = 0;
-    private int lightControllerId = 0;
-    private int ventilationControllerId = 0;
-    private int airControllerId = 0;
+    private String bodySensorId = "";
+    private String lightControllerId = "";
+    private String ventilationControllerId = "";
+    private String airControllerId = "";
+
     private boolean isLogin = false;
 
-    // 程序的入口
     @Override
     public void onCreate() {
         super.onCreate();
     }
 
-    // 创建每个变量的get和set方法
-    public String getServerAddress() {
-        return serverAddress;
+    public void setServerAddress(String s) {
+        this.serverAddress = s;
     }
 
-    public void setServerAddress(String serverAddress) {
-        this.serverAddress = serverAddress;
+    public String getServerAddress() {
+        return this.serverAddress;
+    }
+
+    public void setProjectLabel(String s) {
+        this.projectLabel = s;
     }
 
     public String getProjectLabel() {
-        return projectLabel;
+        return this.projectLabel;
     }
 
-    public void setProjectLabel(String projectLabel) {
-        this.projectLabel = projectLabel;
+    public void setCloudAccount(String s) {
+        this.cloudAccount = s;
     }
 
     public String getCloudAccount() {
-        return cloudAccount;
+        return this.cloudAccount;
     }
 
-    public void setCloudAccount(String cloudAccount) {
-        this.cloudAccount = cloudAccount;
+    public void setCloudAccountPassword(String s) {
+        this.cloudAccountPassword = s;
     }
 
     public String getCloudAccountPassword() {
-        return cloudAccountPassword;
+        return this.cloudAccountPassword;
     }
 
-    public void setCloudAccountPassword(String cloudAccountPassword) {
-        this.cloudAccountPassword = cloudAccountPassword;
+    public void setCameraAddress(String s) {
+        this.cameraAddress = s;
     }
 
     public String getCameraAddress() {
-        return cameraAddress;
+        return this.cameraAddress;
     }
 
-    public void setCameraAddress(String cameraAddress) {
-        this.cameraAddress = cameraAddress;
+    public void setTempSensorId(String s) {
+        this.tempSensorId = s;
     }
 
-    public int getTempSensorId() {
-        return tempSensorId;
+    public String getTempSensorId() {
+        return this.tempSensorId;
     }
 
-    public void setTempSensorId(int tempSensorId) {
-        this.tempSensorId = tempSensorId;
+    public void setTempThresholdValue(float s) {
+        this.tempThresholdValue = s;
     }
 
     public float getTempThresholdValue() {
-        return tempThresholdValue;
+        return this.tempThresholdValue;
     }
 
-    public void setTempThresholdValue(float tempThresholdValue) {
-        this.tempThresholdValue = tempThresholdValue;
+    public void setHumSensorId(String s) {
+        this.humSensorId = s;
     }
 
-    public int getHumSensorId() {
-        return humSensorId;
+    public String getHumSensorId() {
+        return this.humSensorId;
     }
 
-    public void setHumSensorId(int humSensorId) {
-        this.humSensorId = humSensorId;
+    public void setHumThresholdValue(float s) {
+        this.humThresholdValue = s;
     }
 
     public float getHumThresholdValue() {
-        return humThresholdValue;
+        return this.humThresholdValue;
     }
 
-    public void setHumThresholdValue(float humThresholdValue) {
-        this.humThresholdValue = humThresholdValue;
+    public void setLightSensorId(String s) {
+        this.lightSensorId = s;
     }
 
-    public int getLightSensorId() {
-        return lightSensorId;
+    public String getLightSensorId() {
+        return this.lightSensorId;
     }
 
-    public void setLightSensorId(int lightSensorId) {
-        this.lightSensorId = lightSensorId;
+    public void setLightThresholdValue(float s) {
+        this.lightThresholdValue = s;
     }
 
     public float getLightThresholdValue() {
-        return lightThresholdValue;
+        return this.humThresholdValue;
     }
 
-    public void setLightThresholdValue(float lightThresholdValue) {
-        this.lightThresholdValue = lightThresholdValue;
+    public void setBodySensorId(String s) {
+        this.bodySensorId = s;
     }
 
-    public int getBodySensorId() {
-        return bodySensorId;
+    public String getBodySensorId() {
+        return this.bodySensorId;
     }
 
-    public void setBodySensorId(int bodySensorId) {
-        this.bodySensorId = bodySensorId;
+    public void setLightControllerId(String s) {
+        this.lightControllerId = s;
     }
 
-    public int getLightControllerId() {
-        return lightControllerId;
+    public String getLightControllerId() {
+        return this.lightControllerId;
     }
 
-    public void setLightControllerId(int lightControllerId) {
-        this.lightControllerId = lightControllerId;
+    public void setVentilationControllerId(String s) {
+        this.ventilationControllerId = s;
     }
 
-    public int getVentilationControllerId() {
-        return ventilationControllerId;
+    public String getVentilationControllerId() {
+        return this.ventilationControllerId;
     }
 
-    public void setVentilationControllerId(int ventilationControllerId) {
-        this.ventilationControllerId = ventilationControllerId;
+    public void setAirControllerId(String s) {
+        this.airControllerId = s;
     }
 
-    public int getAirControllerId() {
-        return airControllerId;
+    public String getAirControllerId() {
+        return this.airControllerId;
     }
 
-    public void setAirControllerId(int airControllerId) {
-        this.airControllerId = airControllerId;
+    public void setIsLogin(boolean s) {
+        this.isLogin = s;
     }
 
-    public boolean isLogin() {
-        return isLogin;
+    public boolean getIsLogin() {
+        return this.isLogin;
     }
 
-    public void setLogin(boolean login) {
-        isLogin = login;
-    }
+
 }

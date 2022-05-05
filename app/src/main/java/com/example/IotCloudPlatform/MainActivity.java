@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,8 @@ import com.example.IotCloudPlatform.tools.CloudHelper;
 import com.example.IotCloudPlatform.tools.SmartFactoryApplication;
 
 import java.lang.reflect.Method;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -79,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
         spLight = (Spinner) findViewById(R.id.sp_light_control);
         spLight.setAdapter(adapter);
 
+        // 加载数据
+
+
     }
 
     // 添加选项
@@ -117,6 +123,67 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
+    }
+
+    // 加载云平台数据
+    private void loadCloudData() {
+        smartFactory = (SmartFactoryApplication) getApplication();
+        cloudHelper = new CloudHelper();
+        if (smartFactory != null &&
+                smartFactory.getServerAddress() != "" &&
+                smartFactory.getCloudAccount() != "" &&
+                smartFactory.getCloudAccountPassword() != "") {
+            cloudHelper.signIn(getApplicationContext(),
+                    smartFactory.getServerAddress(),
+                    smartFactory.getCloudAccount(),
+                    smartFactory.getCloudAccountPassword());
+        }
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (cloudHelper.getToken() != "") {
+                    cloudHelper.getSensorData(getApplicationContext(),
+                            smartFactory.getServerAddress(),
+                            smartFactory.getProjectLabel(),
+                            String.valueOf(smartFactory.getLightSensorId()),
+                            new CloudHelper.DCallback() {
+                                @Override
+                                public void trans(String s) {
+                                    lightValue = Integer.valueOf(s).floatValue();
+                                    Log.d("lightValue", s);
+
+                                }
+                            });
+                    cloudHelper.getSensorData(getApplicationContext(),
+                            smartFactory.getServerAddress(),
+                            smartFactory.getProjectLabel(),
+                            String.valueOf(smartFactory.getTempSensorId()),
+                            new CloudHelper.DCallback() {
+                                @Override
+                                public void trans(String s) {
+                                    tempValue = Integer.valueOf(s).floatValue();
+                                    Log.d("tempValue", s);
+
+                                }
+                            });
+                    cloudHelper.getSensorData(getApplicationContext(),
+                            smartFactory.getServerAddress(),
+                            smartFactory.getProjectLabel(),
+                            String.valueOf(smartFactory.getHumSensorId()),
+                            new CloudHelper.DCallback() {
+                                @Override
+                                public void trans(String s) {
+                                    humValue = Integer.valueOf(s).floatValue();
+                                    Log.d("humValue", s);
+
+                                }
+                            });
+                    handler.sendEmptyMessage(1);
+
+                }
+
+            }
+        }, 0, 5000);
     }
 
 

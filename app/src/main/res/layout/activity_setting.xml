@@ -38,6 +38,7 @@
         android:layout_column="5"
         android:layout_columnSpan="11"
         android:ems="11"
+        android:text="http://api.nlecloud.com"
         android:hint="@string/address_hint" />
 
     <TextView
@@ -56,7 +57,7 @@
         android:layout_column="5"
         android:layout_columnSpan="11"
         android:ems="11"
-        android:text="PcDemo" />
+        android:text="470364" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -74,7 +75,7 @@
         android:layout_column="5"
         android:layout_columnSpan="11"
         android:ems="11"
-        android:text="user001" />
+        android:text="17343403261" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -93,7 +94,7 @@
         android:layout_columnSpan="11"
         android:ems="11"
         android:inputType="textPassword"
-        android:text="user001" />
+        android:text="xz20011102" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -156,7 +157,7 @@
         android:layout_column="4"
         android:layout_columnSpan="4"
         android:ems="2"
-        android:text="10" />
+        android:text="zt" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -192,7 +193,7 @@
         android:layout_column="4"
         android:layout_columnSpan="4"
         android:ems="3"
-        android:text="20" />
+        android:text="zh" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -228,7 +229,7 @@
         android:layout_column="4"
         android:layout_columnSpan="4"
         android:ems="3"
-        android:text="30" />
+        android:text="zl" />
 
     <TextView
         android:layout_width="wrap_content"
