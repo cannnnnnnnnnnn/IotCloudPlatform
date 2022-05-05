@@ -14,6 +14,7 @@ import cn.com.newland.nle_sdk.util.NetWorkBusiness;
 // 云服务工具类
 public class CloudHelper {
 
+    // token的获取成功表明云平台登录成功
     private String token = "";
 
     public String getToken() {

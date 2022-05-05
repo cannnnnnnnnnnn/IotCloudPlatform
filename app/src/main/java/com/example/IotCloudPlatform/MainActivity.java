@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
     TextView humView;
     TextView lightView;
     // 存储文本信息
-    float tempValue;
-    float humValue;
-    float lightValue;
+    String tempValue;
+    String humValue;
+    String lightValue;
     private Spinner spVentilation;
     private Spinner spAc;
     private Spinner spLight;
@@ -38,10 +38,16 @@ public class MainActivity extends AppCompatActivity {
     SmartFactoryApplication smartFactory;
 
     // 创建消息线程
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-
+    final Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case 1:
+                    lightView.setText(lightValue);
+                    tempView.setText(tempValue);
+                    humView.setText(humValue);
+                default:
+                    break;
+            }
         }
     };
 
@@ -56,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
         lightView = findViewById(R.id.tv_light_value);
 
         // 获取文本信息
-        tempValue = Float.parseFloat(tempView.getText().toString().trim());
-        humValue = Float.parseFloat(humView.getText().toString().trim());
-        lightValue = Float.parseFloat(lightView.getText().toString().trim());
+        tempValue = tempView.getText().toString().trim();
+        humValue = humView.getText().toString().trim();
+        lightValue = lightView.getText().toString().trim();
 
         // 通知系统刷新menu
         invalidateOptionsMenu();
@@ -83,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         spLight.setAdapter(adapter);
 
         // 加载数据
-
+        loadCloudData();
 
     }
 
@@ -118,6 +124,10 @@ public class MainActivity extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.action_setting:   // activity跳转
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                // 传输信息
+//                intent.putExtra("tempValue", tempValue);
+//                intent.putExtra("humValue", humValue);
+//                intent.putExtra("lightValue", lightValue);
                 startActivity(intent);
                 return true;
             default:
@@ -149,8 +159,8 @@ public class MainActivity extends AppCompatActivity {
                             new CloudHelper.DCallback() {
                                 @Override
                                 public void trans(String s) {
-                                    lightValue = Integer.valueOf(s).floatValue();
-                                    Log.d("lightValue", s);
+                                    lightValue = s;
+                                    //Log.d("lightValue", s);
 
                                 }
                             });
@@ -161,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                             new CloudHelper.DCallback() {
                                 @Override
                                 public void trans(String s) {
-                                    tempValue = Integer.valueOf(s).floatValue();
+                                    tempValue = s;
                                     Log.d("tempValue", s);
 
                                 }
@@ -173,15 +183,13 @@ public class MainActivity extends AppCompatActivity {
                             new CloudHelper.DCallback() {
                                 @Override
                                 public void trans(String s) {
-                                    humValue = Integer.valueOf(s).floatValue();
+                                    humValue = s;
                                     Log.d("humValue", s);
 
                                 }
                             });
                     handler.sendEmptyMessage(1);
-
                 }
-
             }
         }, 0, 5000);
     }
