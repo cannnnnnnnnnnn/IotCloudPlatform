@@ -3,18 +3,82 @@ package com.example.IotCloudPlatform;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.example.IotCloudPlatform.tools.CloudHelper;
+import com.example.IotCloudPlatform.tools.SmartFactoryApplication;
 
 import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity {
 
+    // 温度、湿度、光照强度
+    TextView tempView;
+    TextView humView;
+    TextView lightView;
+    // 存储文本信息
+    float tempValue;
+    float humValue;
+    float lightValue;
+    private Spinner spVentilation;
+    private Spinner spAc;
+    private Spinner spLight;
+    CloudHelper cloudHelper;
+    SmartFactoryApplication smartFactory;
+
+    // 创建消息线程
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // 绑定控件信息
+        tempView = findViewById(R.id.tv_temp_value);
+        humView = findViewById(R.id.tv_hum_value);
+        lightView = findViewById(R.id.tv_light_value);
+
+        // 获取文本信息
+        tempValue = Float.parseFloat(tempView.getText().toString().trim());
+        humValue = Float.parseFloat(humView.getText().toString().trim());
+        lightValue = Float.parseFloat(lightView.getText().toString().trim());
+
+        // 通知系统刷新menu
+        invalidateOptionsMenu();
+
+        // 资源属性对象
+        Resources res = getResources();
+        String[] controlStatus = res.getStringArray(R.array.control_status);
+
+        // 数据源适配器
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, controlStatus);
+
+        // 绑定数据源(风扇)
+        spVentilation = (Spinner) findViewById(R.id.sp_ventilation_control);
+        spVentilation.setAdapter(adapter);
+
+        // 绑定数据源(风扇)
+        spAc = (Spinner) findViewById(R.id.sp_air_control);
+        spAc.setAdapter(adapter);
+
+        // 绑定数据源(风扇)
+        spLight = (Spinner) findViewById(R.id.sp_light_control);
+        spLight.setAdapter(adapter);
+
     }
 
     // 添加选项
