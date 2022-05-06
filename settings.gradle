@@ -10,6 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // 官方没有jcenter的加载
+        //jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 rootProject.name = "Iot cloud platform"

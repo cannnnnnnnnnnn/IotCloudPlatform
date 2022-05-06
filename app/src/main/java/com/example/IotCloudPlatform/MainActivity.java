@@ -299,9 +299,37 @@ public class MainActivity extends AppCompatActivity {
         // 初始化数据库
         databaseHelper = new DataBaseHelper(MainActivity.this);
 
+        /*
+         *   添加文本框点击事件
+         * */
+        // 温度
+        tempView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DataChartActivity.class);
+                intent.putExtra("type", "温度");
+                startActivity(intent);
+            }
+        });
+
+        // 湿度
+        tempView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        // 光照
+        tempView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         // 加载数据
         loadCloudData();
-
     }
 
     // 添加选项
