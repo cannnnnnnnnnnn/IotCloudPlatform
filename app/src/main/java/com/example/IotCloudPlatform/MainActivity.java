@@ -2,9 +2,14 @@ package com.example.IotCloudPlatform;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,8 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -39,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
     private Spinner spVentilation;
     private Spinner spAc;
     private Spinner spLight;
+    // 图片显示对象
+    private ImageView img_fs;
+    private ImageView img_airs;
+    private ImageView img_lt;
 
     CloudHelper cloudHelper;
     SmartFactoryApplication smartFactory;
@@ -73,6 +84,11 @@ public class MainActivity extends AppCompatActivity {
         humView = findViewById(R.id.tv_hum_value);
         lightView = findViewById(R.id.tv_light_value);
 
+        // ImageView对象(动画显示)
+        img_fs = findViewById(R.id.img_fan);
+        img_airs = findViewById(R.id.img_air);
+        img_lt = findViewById(R.id.img_light);
+
         // 获取文本信息
         tempValue = tempView.getText().toString().trim();
         humValue = humView.getText().toString().trim();
@@ -100,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
         spLight = (Spinner) findViewById(R.id.sp_light_control);
         spLight.setAdapter(adapter);
 
+        // 风扇动画对象绑定
+        rotate = AnimationUtils.loadAnimation(MainActivity.this, R.anim.rotate_anim);
+
         // 风扇控制温度
         spVentilation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -113,22 +132,34 @@ public class MainActivity extends AppCompatActivity {
                 String controllerId = smartFactory.getVentilationControllerId().trim();
                 String status = spVentilation.getItemAtPosition(position).toString();
                 if (cloudHelper.getToken() != "") {
+                    // 绑定动画对象
+                    img_fs.setAnimation(rotate);
                     switch (status) {
                         case "打开":
                             cloudHelper.onOff(c, address, projLabel, controllerId, 1);
+                            // 开启动画
+                            img_fs.startAnimation(rotate);
                             break;
-                        case "关闭":
-                            cloudHelper.onOff(c, address, projLabel, controllerId, 0);
-                            break;
+//                        case "关闭":
+//                            cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+//                            // 关闭动画
+//                            img_fs.clearAnimation();
+//                            break;
                         case "自动":
                             if (Float.parseFloat(tempValue) > smartFactory.getTempThresholdValue()) {
                                 cloudHelper.onOff(c, address, projLabel, controllerId, 1);
+                                // 开启动画
+                                img_fs.startAnimation(rotate);
                             } else {
                                 cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                                // 关闭动画
+                                img_fs.clearAnimation();
                             }
                             break;
                         default:
                             cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                            // 关闭动画
+                            img_fs.clearAnimation();
                             break;
                     }
                 }
@@ -139,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         spVentilation.setSelection(1, true);
+
 
         // 空调控制湿度
         spAc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -153,21 +185,34 @@ public class MainActivity extends AppCompatActivity {
                 String controllerId = smartFactory.getAirControllerId().trim();
                 String status = spAc.getItemAtPosition(position).toString();
                 if (cloudHelper.getToken() != "") {
+                    // 绑定空调动画对象
+                    img_airs.setImageResource(R.drawable.frame_anim);
+                    AnimationDrawable ad = (AnimationDrawable) img_airs.getDrawable();
                     switch (status) {
                         case "打开":
                             cloudHelper.onOff(c, address, projLabel, controllerId, 1);
+                            // 开启动画
+                            ad.start();
                             break;
-                        case "关闭":
-                            cloudHelper.onOff(c, address, projLabel, controllerId, 0);
-                            break;
+//                        case "关闭":
+//                            cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+//                            break;
                         case "自动":
                             if (Float.parseFloat(humValue) > smartFactory.getHumThresholdValue()) {
                                 cloudHelper.onOff(c, address, projLabel, controllerId, 1);
+                                // 开启动画
+                                ad.start();
                             } else {
                                 cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                                // 关闭动画
+                                ad.stop();
+                                img_airs.setImageResource(R.drawable.air1);
                             }
                             break;
                         default:
+                            // 关闭动画
+                            ad.stop();
+                            img_airs.setImageResource(R.drawable.air1);
                             cloudHelper.onOff(c, address, projLabel, controllerId, 0);
                             break;
                     }
@@ -179,6 +224,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         spAc.setSelection(1, true);
+
+        // 灯泡动画显示
+//        final ObjectAnimator oa = ObjectAnimator.ofFloat(img_lt, "alpha", 1f, 0f, 1f).setDuration(2000);
+//        oa.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                super.onAnimationEnd(animation);
+//                img_lt.setImageResource(R.drawable.dp);
+//            }
+//        });
+        Animator animator = AnimatorInflater.loadAnimator(this, R.animator.anim);   // 使用适配器类来展现动画
+        animator.setTarget(img_lt);
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                img_lt.setImageResource(R.drawable.dp);
+            }
+        });
 
         // 灯泡控制光照强度
         spLight.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -196,18 +259,28 @@ public class MainActivity extends AppCompatActivity {
                     switch (status) {
                         case "打开":
                             cloudHelper.onOff(c, address, projLabel, controllerId, 1);
+                            // 开启动画
+//                            oa.start();
+                            animator.start();
                             break;
-                        case "关闭":
-                            cloudHelper.onOff(c, address, projLabel, controllerId, 0);
-                            break;
+//                        case "关闭":
+//                            cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+//                            break;
                         case "自动":
                             if (Float.parseFloat(lightValue) < smartFactory.getLightThresholdValue()) {
                                 cloudHelper.onOff(c, address, projLabel, controllerId, 1);
+                                // 开启动画
+//                                oa.start();
+                                animator.start();
                             } else {
                                 cloudHelper.onOff(c, address, projLabel, controllerId, 0);
+                                // 关闭动画
+                                img_lt.setImageResource(R.drawable.light_off);
                             }
                             break;
                         default:
+                            // 关闭动画
+                            img_lt.setImageResource(R.drawable.light_off);
                             cloudHelper.onOff(c, address, projLabel, controllerId, 0);
                             break;
                     }
@@ -296,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void trans(String s) {
                                     lightValue = s;
-                                    //Log.d("lightValue", s);
+                                    Log.d("lightValue", s);
 
                                 }
                             });

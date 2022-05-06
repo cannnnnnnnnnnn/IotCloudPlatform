@@ -203,6 +203,7 @@
             android:gravity="center" />
 
         <ImageView
+            android:id="@+id/img_air"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -236,10 +237,11 @@
             android:gravity="center" />
 
         <ImageView
+            android:id="@+id/img_light"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/dp" />
+            app:srcCompat="@drawable/light_off" />
     </LinearLayout>
 
 
