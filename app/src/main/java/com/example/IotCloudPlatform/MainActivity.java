@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.IotCloudPlatform.tools.CloudHelper;
+import com.example.IotCloudPlatform.tools.DataBaseHelper;
 import com.example.IotCloudPlatform.tools.SmartFactoryApplication;
 
 import java.lang.reflect.Method;
@@ -51,8 +52,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageView img_airs;
     private ImageView img_lt;
 
+    // 工具类对象213
     CloudHelper cloudHelper;
     SmartFactoryApplication smartFactory;
+    DataBaseHelper databaseHelper;
 
     // 判断返回
     static final private int GET_CODE = 0;
@@ -293,6 +296,9 @@ public class MainActivity extends AppCompatActivity {
         });
         spLight.setSelection(1, true);
 
+        // 初始化数据库
+        databaseHelper = new DataBaseHelper(MainActivity.this);
+
         // 加载数据
         loadCloudData();
 
@@ -397,6 +403,8 @@ public class MainActivity extends AppCompatActivity {
 
                                 }
                             });
+                    if (!((tempValue == null) && (humValue == null) && (lightValue == null)))
+                        databaseHelper.insert(MainActivity.this, tempValue, humValue, lightValue);
                     handler.sendEmptyMessage(1);
                 }
             }
