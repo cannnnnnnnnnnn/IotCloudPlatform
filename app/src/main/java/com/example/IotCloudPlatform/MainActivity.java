@@ -1,6 +1,11 @@
 package com.example.IotCloudPlatform;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -8,6 +13,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -24,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.IotCloudPlatform.tools.CloudHelper;
 import com.example.IotCloudPlatform.tools.DataBaseHelper;
@@ -52,13 +59,14 @@ public class MainActivity extends AppCompatActivity {
     private ImageView img_airs;
     private ImageView img_lt;
 
-    // 工具类对象213
+    // 工具类对象
     CloudHelper cloudHelper;
     SmartFactoryApplication smartFactory;
     DataBaseHelper databaseHelper;
 
     // 判断返回
     static final private int GET_CODE = 0;
+    static final private int REQUEST_PERMISSION_OK = 1;
 
     // 加载动画类
     private Animation rotate;
@@ -96,6 +104,37 @@ public class MainActivity extends AppCompatActivity {
         tempValue = tempView.getText().toString().trim();
         humValue = humView.getText().toString().trim();
         lightValue = lightView.getText().toString().trim();
+
+        /*
+         *   添加文本框点击事件
+         * */
+        // 温度
+        tempView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                Intent intent = new Intent(MainActivity.this, DataChartActivity.class);
+                intent.putExtra("type", "温度");
+                startActivity(intent);
+                Log.i("click", "set");
+            }
+        });
+
+        // 湿度
+        tempView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        // 光照
+        tempView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         // 通知系统刷新menu
         invalidateOptionsMenu();
@@ -296,37 +335,13 @@ public class MainActivity extends AppCompatActivity {
         });
         spLight.setSelection(1, true);
 
+//        // 检查权限
+//        checkPermission();
+
         // 初始化数据库
         databaseHelper = new DataBaseHelper(MainActivity.this);
 
-        /*
-         *   添加文本框点击事件
-         * */
-        // 温度
-        tempView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, DataChartActivity.class);
-                intent.putExtra("type", "温度");
-                startActivity(intent);
-            }
-        });
 
-        // 湿度
-        tempView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        // 光照
-        tempView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         // 加载数据
         loadCloudData();
@@ -449,6 +464,33 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+//
+//    // 权限动态申请
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        checkPermission();
+//    }
+//
+//    // 检查权限状态
+//    private void checkPermission() {
+//        if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_OK);
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == REQUEST_PERMISSION_OK) {
+//            if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                Toast.makeText(this, "存储权限已开通", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(this, "存储权限被拒绝", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
 
 }
