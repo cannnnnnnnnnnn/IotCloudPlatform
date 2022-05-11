@@ -8,3 +8,5 @@
 > log中显示没有执行该函数
 
 ![输入图片说明](RPic/image.png)
+
+ :point_right: 重写setOnClickListener方法可以解决对象.setOnClickListener无法跳转的问题
