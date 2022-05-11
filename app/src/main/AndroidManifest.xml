@@ -21,13 +21,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
-            android:name=".MainActivity2"
-            android:exported="false" >
-        <!-- 测试用-->
-        </activity>
-        <activity
-            android:name=".DataChartActivity"
-            android:exported="false" >
+            android:name=".DataChartActivity">
         </activity>
         <activity
             android:name=".SettingActivity"

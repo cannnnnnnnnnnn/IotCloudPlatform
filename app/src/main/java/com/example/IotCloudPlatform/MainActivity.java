@@ -40,7 +40,7 @@ import java.lang.reflect.Method;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
 
     // 温度、湿度、光照强度
     TextView tempView;
@@ -105,36 +105,40 @@ public class MainActivity extends AppCompatActivity {
         humValue = humView.getText().toString().trim();
         lightValue = lightView.getText().toString().trim();
 
-        /*
-         *   添加文本框点击事件
-         * */
-        // 温度
-        tempView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                Intent intent = new Intent(MainActivity.this, DataChartActivity.class);
-                intent.putExtra("type", "温度");
-                startActivity(intent);
-                Log.i("click", "set");
-            }
-        });
+        tempView.setOnClickListener((View.OnClickListener) MainActivity.this);
+        humView.setOnClickListener((View.OnClickListener) MainActivity.this);
+        lightView.setOnClickListener((View.OnClickListener) MainActivity.this);
 
-        // 湿度
-        tempView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        // 光照
-        tempView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+//        /*
+//         *   添加文本框点击事件
+//         * */
+//        // 温度
+//        tempView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+//              Intent intent = new Intent(MainActivity.this, DataChartActivity.class);
+//                intent.putExtra("type", "温度");
+//                startActivity(intent);
+//                Log.i("click", "set");
+//            }
+//        });
+//
+//        // 湿度
+//        tempView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
+//
+//        // 光照
+//        tempView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
         // 通知系统刷新menu
         invalidateOptionsMenu();
@@ -342,7 +346,6 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper = new DataBaseHelper(MainActivity.this);
 
 
-
         // 加载数据
         loadCloudData();
     }
@@ -464,6 +467,29 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    // 点击监听事件
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(MainActivity.this, DataChartActivity.class);
+        switch (view.getId()) {
+            case R.id.tv_temp_value:
+                intent.putExtra("type", "温度");
+                startActivity(intent);
+                break;
+            case R.id.tv_hum_value:
+                intent.putExtra("type", "湿度");
+                startActivity(intent);
+                break;
+            case R.id.tv_light_value:
+                intent.putExtra("type", "光照");
+                startActivity(intent);
+                break;
+        }
+    }
+
+
 
 //
 //    // 权限动态申请
