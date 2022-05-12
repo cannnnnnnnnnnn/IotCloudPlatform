@@ -35,21 +35,26 @@ import android.widget.Toast;
 import com.example.IotCloudPlatform.tools.CloudHelper;
 import com.example.IotCloudPlatform.tools.DataBaseHelper;
 import com.example.IotCloudPlatform.tools.SmartFactoryApplication;
+import com.example.IotCloudPlatform.tools.WebServiceHelper;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    // 温度、湿度、光照强度
+    // 温度、湿度、光照强度、人体感应
     TextView tempView;
     TextView humView;
     TextView lightView;
+    TextView bodyView;
     // 存储文本信息
     String tempValue;
     String humValue;
     String lightValue;
+    String bodyValue;
     // 选项框
     private Spinner spVentilation;
     private Spinner spAc;
@@ -68,6 +73,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     static final private int GET_CODE = 0;
     static final private int REQUEST_PERMISSION_OK = 1;
 
+    // 格式化输出对象
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss");
+
     // 加载动画类
     private Animation rotate;
 
@@ -79,6 +87,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                     lightView.setText(lightValue);
                     tempView.setText(tempValue);
                     humView.setText(humValue);
+                    bodyView.setText(bodyValue);
                 default:
                     break;
             }
@@ -94,6 +103,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         tempView = findViewById(R.id.tv_temp_value);
         humView = findViewById(R.id.tv_hum_value);
         lightView = findViewById(R.id.tv_light_value);
+        bodyView = findViewById(R.id.tv_break_value);
 
         // ImageView对象(动画显示)
         img_fs = findViewById(R.id.img_fan);
@@ -108,6 +118,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         tempView.setOnClickListener((View.OnClickListener) MainActivity.this);
         humView.setOnClickListener((View.OnClickListener) MainActivity.this);
         lightView.setOnClickListener((View.OnClickListener) MainActivity.this);
+        bodyView.setOnClickListener((View.OnClickListener) MainActivity.this);
 
 //        /*
 //         *   添加文本框点击事件
@@ -449,9 +460,30 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
                                 }
                             });
+                    cloudHelper.getSensorData(getApplicationContext(),
+                            smartFactory.getServerAddress(),
+                            smartFactory.getProjectLabel(),
+                            smartFactory.getBodySensorId(),
+                            new CloudHelper.DCallback() {
+                                @Override
+                                public void trans(String s) {
+                                    bodyValue = s;
+                                    Log.d("bodyValue", s);
+                                }
+                            });
                     if (!((tempValue == null) && (humValue == null) && (lightValue == null)))
                         databaseHelper.insert(MainActivity.this, tempValue, humValue, lightValue);
+                    if (bodyValue != null) {
+                        if (bodyValue.equals("0")) {
+                            bodyValue = getResources().getString(R.string.breaking_abnormal);
+                            WebServiceHelper.SaveInfo(dateFormat.format(new Date()) + " " + bodyValue);
+                        } else {
+                            bodyValue = getResources().getString(R.string.breaking_normal);
+                        }
+                    }
+
                     handler.sendEmptyMessage(1);
+
                 }
             }
         }, 0, 5000);
@@ -485,10 +517,11 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             case R.id.tv_light_value:
                 intent.putExtra("type", "光照");
                 startActivity(intent);
+            case R.id.tv_break_value:
+                startActivity(new Intent(MainActivity.this,WarnListActivity.class));
                 break;
         }
     }
-
 
 
 //

@@ -14,6 +14,8 @@
     <string name="light">594.34</string>
 
     <string name="breaking_area_monitoring">禁入区域监控</string>
+    <string name="breaking_abnormal">有人闯入</string>
+    <string name="breaking_normal">正常</string>
     <string name="breaking_value">正常</string>
 
     <string name="device_control">设备控制</string>

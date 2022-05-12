@@ -34,6 +34,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation files('libs\\nlecloudII.jar')
+    implementation files('libs\\ksoap2-android-assembly-3.0.0-RC.4-jar-with-dependencies.jar')
     compileOnly files('libs\\gson-2.2.4.jar')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
