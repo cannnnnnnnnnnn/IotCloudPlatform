@@ -10,3 +10,7 @@
 ![输入图片说明](RPic/image.png)
 
  :point_right: 重写setOnClickListener方法可以解决对象.setOnClickListener无法跳转的问题
+
+> 有信息操作输出，但是没有显示
+
+![输入图片说明](RPic/image.png)
