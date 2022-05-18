@@ -65,4 +65,7 @@ public class CloudHelper {
         });
     }
 
+    public void signOut() {
+        token = "";
+    }
 }

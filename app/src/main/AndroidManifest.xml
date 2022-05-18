@@ -21,11 +21,25 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
-            android:name=".WarnListActivity"
+            android:name=".RegisterActivity"
             android:exported="false" />
-        <activity android:name=".DataChartActivity">
-
-        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LanguageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WarnListActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity android:name=".DataChartActivity" />
         <activity
             android:name=".SettingActivity"
             android:label="@string/global_params_setting" />
@@ -42,7 +56,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/main_page" />
+            android:label="@string/main_page"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

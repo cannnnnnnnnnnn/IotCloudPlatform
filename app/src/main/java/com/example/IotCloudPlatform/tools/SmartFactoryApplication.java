@@ -22,6 +22,7 @@ public class SmartFactoryApplication extends Application {
     private String airControllerId = "";
 
     private boolean isLogin = false;
+    public static String language="";
 
     @Override
     public void onCreate() {

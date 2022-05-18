@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,7 @@ public class WarnListActivity extends Activity {
         WebServiceHelper.GetInfo(new WebServiceHelper.Callback() {
             @Override
             public void call(String s) {
+//                Toast.makeText(WarnListActivity.this, s, Toast.LENGTH_SHORT).show();
                 initWeb(s);
             }
         });

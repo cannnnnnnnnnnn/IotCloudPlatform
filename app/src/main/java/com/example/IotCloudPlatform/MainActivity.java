@@ -3,15 +3,20 @@ package com.example.IotCloudPlatform;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -32,10 +37,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.IotCloudPlatform.tools.CloudHelper;
 import com.example.IotCloudPlatform.tools.DataBaseHelper;
 import com.example.IotCloudPlatform.tools.SmartFactoryApplication;
 import com.example.IotCloudPlatform.tools.WebServiceHelper;
+import com.google.android.material.navigation.NavigationView;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -63,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView img_fs;
     private ImageView img_airs;
     private ImageView img_lt;
+    // 标题框对象
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+    private AlertDialog.Builder dialog;
 
     // 工具类对象
     CloudHelper cloudHelper;
@@ -120,36 +132,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lightView.setOnClickListener((View.OnClickListener) MainActivity.this);
         bodyView.setOnClickListener((View.OnClickListener) MainActivity.this);
 
-//        /*
-//         *   添加文本框点击事件
-//         * */
-//        // 温度
-//        tempView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-//              Intent intent = new Intent(MainActivity.this, DataChartActivity.class);
-//                intent.putExtra("type", "温度");
-//                startActivity(intent);
-//                Log.i("click", "set");
-//            }
-//        });
-//
-//        // 湿度
-//        tempView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//
-//        // 光照
-//        tempView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
+        // 导航设置
+        navigationView = findViewById(R.id.main_nav);
+        drawerLayout = findViewById(R.id.main_drawer);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //导航按钮
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
+                drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        //同步状态
+        mDrawerToggle.syncState();
+        drawerLayout.addDrawerListener(mDrawerToggle);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        drawerLayout.closeDrawers();//点击侧滑菜单,关闭抽屉，隐藏菜单
+                        switch (item.getItemId()) {
+                            case R.id.setting_app:
+//                                startActivity(new Intent(MainActivity.this, UserActivity.class));
+                                break;
+                            case R.id.language_app:
+//                                startActivity(new Intent(MainActivity.this, LanguageActivity.class));
+                                break;
+                            case R.id.about_app:
+//                                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                                break;
+                            case R.id.change_acc:
+                                break;
+                            case R.id.close_app:
+                                break;
+                        }
+                        return true;
+                    }
+                });
 
         // 通知系统刷新menu
         invalidateOptionsMenu();
@@ -517,10 +533,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.tv_light_value:
                 intent.putExtra("type", "光照");
                 startActivity(intent);
-            case R.id.tv_break_value:
-                startActivity(new Intent(MainActivity.this,WarnListActivity.class));
+            case R.id.tv_break_value:       // 人体传感器数据跳转
+                startActivity(new Intent(MainActivity.this, WarnListActivity.class));
                 break;
         }
+    }
+
+    // 登出功能
+    public void logOut() {
+        dialog.setTitle(R.string.account_out);
+        dialog.setMessage(R.string.toast_3);
+        dialog.setPositiveButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        dialog.setNegativeButton(R.string.btn_cancel, null);
+        dialog.show();
+    }
+
+    public void exitDialog() {
+        dialog.setTitle(R.string.btn_out);
+        dialog.setMessage(R.string.toast_4);
+        dialog.setPositiveButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                if (cloudHelper.getToken() != "")
+                    cloudHelper.signOut();
+                finish();
+                System.exit(0);
+            }
+        });
+        dialog.setNegativeButton(R.string.btn_cancel, null);
+        dialog.show();
     }
 
 

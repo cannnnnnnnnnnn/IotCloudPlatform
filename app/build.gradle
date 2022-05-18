@@ -33,6 +33,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
     implementation files('libs\\nlecloudII.jar')
     implementation files('libs\\ksoap2-android-assembly-3.0.0-RC.4-jar-with-dependencies.jar')
     compileOnly files('libs\\gson-2.2.4.jar')
