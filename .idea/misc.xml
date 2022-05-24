@@ -5,8 +5,14 @@
       <map>
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable-hdpi/button_style.xml" value="0.2265" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.117" />
+        <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable/bg_btn_bluecorners.xml" value="0.151" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable/bg_btn_bluecorners_press.xml" value="0.1145" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable/bg_btn_ptz.xml" value="0.1145" />
+        <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable/bg_edittextview.xml" value="0.151" />
+        <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable/bg_edt_bluestroke.xml" value="0.151" />
+        <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable/bg_edt_bluestroke_press.xml" value="0.151" />
+        <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable/bg_grid_transparent.xml" value="0.151" />
+        <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable/bg_login_blue.xml" value="0.151" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable/frame_anim.xml" value="0.138" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable/ic_launcher_background.xml" value="0.117" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/drawable/shape.xml" value="0.2325" />
@@ -18,13 +24,16 @@
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/activity_login.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/activity_main2.xml" value="0.4" />
+        <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/activity_register.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/activity_setting.xml" value="0.264" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/activity_splash.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/activity_user.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/activity_warn_list.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/activity_warnlist.xml" value="0.25364583333333335" />
+        <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/items_lv_language.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/view_navigation_header.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/view_titile_frame.xml" value="0.264" />
+        <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/view_title_frame.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/layout/warn_list_item.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/menu/drawer_view.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/IotCloudPlatform/app/src/main/res/menu/menu_main.xml" value="0.25364583333333335" />

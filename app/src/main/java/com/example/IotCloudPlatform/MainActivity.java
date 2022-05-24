@@ -150,17 +150,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         drawerLayout.closeDrawers();//点击侧滑菜单,关闭抽屉，隐藏菜单
                         switch (item.getItemId()) {
                             case R.id.setting_app:
-//                                startActivity(new Intent(MainActivity.this, UserActivity.class));
+                                startActivity(new Intent(MainActivity.this, UserActivity.class));
                                 break;
                             case R.id.language_app:
-//                                startActivity(new Intent(MainActivity.this, LanguageActivity.class));
+                                startActivity(new Intent(MainActivity.this, LanguageActivity.class));
                                 break;
                             case R.id.about_app:
-//                                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                                startActivity(new Intent(MainActivity.this, AboutActivity.class));
                                 break;
                             case R.id.change_acc:
+                                logOut();
                                 break;
                             case R.id.close_app:
+                                exitDialog();
                                 break;
                         }
                         return true;
@@ -555,6 +557,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dialog.show();
     }
 
+    // 推出软件
     public void exitDialog() {
         dialog.setTitle(R.string.btn_out);
         dialog.setMessage(R.string.toast_4);
