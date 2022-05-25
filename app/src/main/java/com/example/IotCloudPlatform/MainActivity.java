@@ -18,6 +18,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
@@ -75,6 +76,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private AlertDialog.Builder dialog;
+
+    // 题头信息
+    private TextView account;
+
 
     // 工具类对象
     CloudHelper cloudHelper;
@@ -140,6 +145,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawerLayout = findViewById(R.id.main_drawer);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // 更新头数据
+        SharedPreferences pref = getSharedPreferences("loginSet", MODE_PRIVATE);
+        int viewId = getResources().getIdentifier("tv_accountName", "id", getPackageName());
+        TextView textView =findViewById(viewId);
+        textView.setText(pref.getString("user","NULL"));
+
         //导航按钮
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
                 drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
@@ -172,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         return true;
                     }
                 });
+
 
         // 通知系统刷新menu
         invalidateOptionsMenu();

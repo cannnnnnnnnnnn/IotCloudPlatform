@@ -26,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tv_register;
     private Button btn_login;
     private SharedPreferences spPreference;
-    private String result;
 
     // 创建数据库对象
     LoginDataBaseHelper mySqliteHelper = new LoginDataBaseHelper(LoginActivity.this, "user.db", null, 1);
