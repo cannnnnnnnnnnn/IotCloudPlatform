@@ -1,7 +1,9 @@
 package com.example.IotCloudPlatform;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -15,46 +17,52 @@ import android.os.Message;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.IotCloudPlatform.tools.LoginDataBaseHelper;
 import com.example.IotCloudPlatform.tools.WebServiceHelper;
 
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText ed_id,ed_pwd;
+    private EditText ed_id, ed_pwd;
     private TextView tv_register;
     private Button btn_login;
     private SharedPreferences spPreference;
     private String result;
-    Handler handler = new Handler(){
+
+    // 创建数据库对象
+    LoginDataBaseHelper mySqliteHelper = new LoginDataBaseHelper(LoginActivity.this, "user.db", null, 1);
+
+
+    Handler handler = new Handler() {
         @Override
-        public void handleMessage(Message msg){
-            if(msg.what==1){
+        public void handleMessage(Message msg) {
+            if (msg.what == 1) {
                 SharedPreferences.Editor editor = spPreference.edit();
-                editor.putString("pwd",ed_pwd.getText().toString().trim());
-                editor.putString("user",ed_id.getText().toString().trim());
+                editor.putString("pwd", ed_pwd.getText().toString().trim());
+                editor.putString("user", ed_id.getText().toString().trim());
                 editor.commit();
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
-            }
-            else{
-                Toast.makeText(LoginActivity.this,R.string.account_toast_text2,Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(LoginActivity.this, R.string.account_toast_text2, Toast.LENGTH_SHORT).show();
             }
         }
 
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ed_id = findViewById(R.id.account_id);
-        ed_pwd =findViewById(R.id.account_psw);
+        ed_pwd = findViewById(R.id.account_psw);
         tv_register = findViewById(R.id.tv_registered);
         btn_login = findViewById(R.id.btn_loginUp);
-        spPreference = getSharedPreferences("loginSet",MODE_PRIVATE);
-        ed_id.setText(spPreference.getString("user",""));
-        ed_pwd.setText(spPreference.getString("pwd",""));
+        spPreference = getSharedPreferences("loginSet", MODE_PRIVATE);
+        ed_id.setText(spPreference.getString("user", ""));
+        ed_pwd.setText(spPreference.getString("pwd", ""));
         tv_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,27 +73,31 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginUp(ed_id.getEditableText().toString(),ed_pwd.getEditableText().toString());
+                loginUp(ed_id.getEditableText().toString(), ed_pwd.getEditableText().toString());
             }
         });
     }
 
-    private void loginUp(String userName, String password){
-        if(TextUtils.isEmpty(userName)||TextUtils.isEmpty(password)){
-            Toast.makeText(LoginActivity.this,R.string.account_toast_text1,Toast.LENGTH_SHORT).show();
+    private void loginUp(String userName, String password) {
+        if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)) {
+            Toast.makeText(LoginActivity.this, R.string.account_toast_text1, Toast.LENGTH_SHORT).show();
             return;
         }
-        WebServiceHelper.GetLogin(new WebServiceHelper.Callback() {
-            @Override
-            public void call(String s) {
-                result=s;
-                if(result.equals("true")){
+        // 接收查询的全部数据
+        Cursor cursor = mySqliteHelper.getWritableDatabase().query("users", null, "account = ?", new String[]{userName}, null, null, null);
+        if (cursor.getCount() > 0) {
+            //移动到首位
+            cursor.moveToFirst();
+            for (int i = 0; i < cursor.getCount(); i++) {
+                @SuppressLint("Range") String pass2 = cursor.getString(cursor.getColumnIndex("password"));
+                // 验证密码
+                if (pass2.equals(password)) {
+                    Toast.makeText(this, "登录成功！", Toast.LENGTH_SHORT).show();
                     handler.sendEmptyMessage(1);
-                }
-                else {
+                } else {
                     handler.sendEmptyMessage(0);
                 }
             }
-        },userName,password);
+        }
     }
 }
