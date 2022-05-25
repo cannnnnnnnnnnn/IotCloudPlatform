@@ -132,6 +132,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lightView.setOnClickListener((View.OnClickListener) MainActivity.this);
         bodyView.setOnClickListener((View.OnClickListener) MainActivity.this);
 
+        // 注销框对象的初始化
+        dialog = new AlertDialog.Builder(this);
+
         // 导航设置
         navigationView = findViewById(R.id.main_nav);
         drawerLayout = findViewById(R.id.main_drawer);
@@ -159,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                                 break;
                             case R.id.change_acc:
+                                // 切换用户
                                 logOut();
                                 break;
                             case R.id.close_app:
@@ -183,11 +187,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         spVentilation = (Spinner) findViewById(R.id.sp_ventilation_control);
         spVentilation.setAdapter(adapter);
 
-        // 绑定数据源(风扇)
+        // 绑定数据源(空调)
         spAc = (Spinner) findViewById(R.id.sp_air_control);
         spAc.setAdapter(adapter);
 
-        // 绑定数据源(风扇)
+        // 绑定数据源(灯光)
         spLight = (Spinner) findViewById(R.id.sp_light_control);
         spLight.setAdapter(adapter);
 

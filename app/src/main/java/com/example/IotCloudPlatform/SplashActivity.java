@@ -64,7 +64,7 @@ public class SplashActivity extends AppCompatActivity {
 //                当计时到零时或者点击取消时
                 if ((second == 0) || (skipping == true)) {
 //                    使用intent实现MainActivity跳转
-                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
                     // 销毁此页面(在这里调整细节点)
                     finish();
