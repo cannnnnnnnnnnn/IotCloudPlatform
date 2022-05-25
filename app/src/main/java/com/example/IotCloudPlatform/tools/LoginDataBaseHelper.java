@@ -17,7 +17,7 @@ public class LoginDataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 创建存登录用户表
-        db.execSQL("create table users(user text,password text)");
+        db.execSQL("create table users(account text,password text,phone text,email text,sex text)");
     }
 
     @Override
