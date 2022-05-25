@@ -1,35 +1,29 @@
 package com.example.IotCloudPlatform;
 
+import android.content.ContentValues;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Message;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.IotCloudPlatform.tools.LoginDataBaseHelper;
 import com.example.IotCloudPlatform.tools.WebServiceHelper;
 
 
 public class RegisterActivity extends AppCompatActivity {
     private Button registered_button;
     private EditText id_edit, psw_edit, phone_edit, email_edit;
-    private String id, psw, phone,sex, email, result;
+    private String id, psw, phone, sex, email, result;
     private RadioGroup radioGroup;
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg){
-            if(msg.what==0){
-                Toast.makeText(RegisterActivity.this,result,Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-    };
+
+    // 创建数据库对象
+    LoginDataBaseHelper mySqliteHelper = new LoginDataBaseHelper(RegisterActivity.this, "user.db", null, 1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
                 ActivityCompat.finishAfterTransition(RegisterActivity.this);
             }
         });
+        // 按钮监听事件
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -60,24 +55,40 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+        // 注册按钮
         registered_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 id = id_edit.getText().toString().trim();
                 psw = psw_edit.getText().toString().trim();
-                phone=phone_edit.getText().toString().trim();
+                phone = phone_edit.getText().toString().trim();
                 email = email_edit.getText().toString().trim();
-                if(id.equals("")&&psw.equals("")){
-                    Toast.makeText(RegisterActivity.this, R.string.account_toast_text1,Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    WebServiceHelper.SetReg(new WebServiceHelper.Callback() {
-                        @Override
-                        public void call(String s) {
-                            result = s;
-                            handler.sendEmptyMessage(0);
-                        }
-                    },id,psw,sex,phone,email);
+                if (id.equals("") && psw.equals("")) {
+                    Toast.makeText(RegisterActivity.this, R.string.account_toast_text1, Toast.LENGTH_SHORT).show();
+                } else {
+                    //把数据添加到ContentValues
+                    ContentValues values = new ContentValues();
+                    values.put("account", id);
+                    values.put("password", psw);
+                    values.put("phone", phone);
+                    values.put("email", email);
+                    values.put("sex", sex);
+                    //添加数据到数据库
+                    long index = mySqliteHelper.getWritableDatabase().insert("users", null, values);
+
+                    if (index > 0) {
+                        Toast.makeText(RegisterActivity.this, "注册成功！", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "注册失败！", Toast.LENGTH_SHORT).show();
+                    }
+
+                    // 清空数据
+                    id_edit.setText("");
+                    psw_edit.setText("");
+                    phone_edit.setText("");
+                    email_edit.setText("");
+                    // 清除选中
+                    radioGroup.clearCheck();
                 }
             }
         });
