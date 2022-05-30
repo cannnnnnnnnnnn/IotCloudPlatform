@@ -1,30 +1,25 @@
 package com.example.IotCloudPlatform;
 
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,11 +31,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.IotCloudPlatform.tools.CloudHelper;
 import com.example.IotCloudPlatform.tools.DataBaseHelper;
+import com.example.IotCloudPlatform.tools.LoginDataBaseHelper;
 import com.example.IotCloudPlatform.tools.SmartFactoryApplication;
 import com.example.IotCloudPlatform.tools.WebServiceHelper;
 import com.google.android.material.navigation.NavigationView;
@@ -77,9 +72,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Toolbar toolbar;
     private AlertDialog.Builder dialog;
 
-    // 题头信息
-    private TextView account;
-
 
     // 工具类对象
     CloudHelper cloudHelper;
@@ -95,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // 加载动画类
     private Animation rotate;
+
+    // 创建数据库对象
+    LoginDataBaseHelper mySqliteHelper = new LoginDataBaseHelper(MainActivity.this, "user.db", null, 1);
 
     // 创建消息线程
     final Handler handler = new Handler() {
@@ -146,11 +141,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // 更新头数据
-        SharedPreferences pref = getSharedPreferences("loginSet", MODE_PRIVATE);
-        int viewId = getResources().getIdentifier("tv_accountName", "id", getPackageName());
-        TextView textView =findViewById(viewId);
-        textView.setText(pref.getString("user","NULL"));
 
         //导航按钮
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
@@ -565,6 +555,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dialog.setPositiveButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
+                // 清除数据库登录状态
+                data_logout();
+                // activity跳转
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
@@ -574,7 +567,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dialog.show();
     }
 
-    // 推出软件
+    // 退出软件
     public void exitDialog() {
         dialog.setTitle(R.string.btn_out);
         dialog.setMessage(R.string.toast_4);
@@ -583,6 +576,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(DialogInterface arg0, int arg1) {
                 if (cloudHelper.getToken() != "")
                     cloudHelper.signOut();
+                // 清除数据库登录状态
+                data_logout();
                 finish();
                 System.exit(0);
             }
@@ -591,7 +586,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dialog.show();
     }
 
+    // 清除数据库登录状态
+    public void data_logout() {
+        // 清除用户登录状态（更新数据库）
+        // 获取当前用户登录状态
+        Cursor cursor = mySqliteHelper.getWritableDatabase().query("users", null, "login = ?", new String[]{"1"}, null, null, null);
+        if (cursor.getCount() > 0) {
+            //移动到首位
+            cursor.moveToFirst();
+            // 存在该账户
+            @SuppressLint("Range") String usernamep = cursor.getString(cursor.getColumnIndex("account"));
+            //把数据添加到ContentValues
+            ContentValues values = new ContentValues();
+            values.put("login", "0");
+            // 执行更新操作
+            mySqliteHelper.getWritableDatabase().update("users", values, "account = ?", new String[]{usernamep});
 
+            // 以防返回时跳转
+            finish();
+        }
+    }
 //
 //    // 权限动态申请
 //    @Override

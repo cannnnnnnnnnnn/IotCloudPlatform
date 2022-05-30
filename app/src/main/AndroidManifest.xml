@@ -21,14 +21,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
-            android:name=".MainActivity2"
-            android:exported="true"
-            android:label="test"
-            android:theme="@style/Theme.AppCompat.Light">
-            <!--测试用的activity-->
-
-        </activity>
-        <activity
             android:name=".RegisterActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

@@ -1,6 +1,7 @@
 package com.example.IotCloudPlatform;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -35,10 +36,6 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1) {
-                SharedPreferences.Editor editor = spPreference.edit();
-                editor.putString("pwd", ed_pwd.getText().toString().trim());
-                editor.putString("user", ed_id.getText().toString().trim());
-                editor.commit();
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -87,15 +84,19 @@ public class LoginActivity extends AppCompatActivity {
         if (cursor.getCount() > 0) {
             //移动到首位
             cursor.moveToFirst();
-            for (int i = 0; i < cursor.getCount(); i++) {
-                @SuppressLint("Range") String pass2 = cursor.getString(cursor.getColumnIndex("password"));
-                // 验证密码
-                if (pass2.equals(password)) {
-                    Toast.makeText(this, "登录成功！", Toast.LENGTH_SHORT).show();
-                    handler.sendEmptyMessage(1);
-                } else {
-                    handler.sendEmptyMessage(0);
-                }
+            @SuppressLint("Range") String pass2 = cursor.getString(cursor.getColumnIndex("password"));
+            // 验证密码
+            if (pass2.equals(password)) {
+                Toast.makeText(this, "登录成功！", Toast.LENGTH_SHORT).show();
+                //把数据添加到ContentValues
+                ContentValues values = new ContentValues();
+                values.put("login", "1");
+                // 执行更新操作
+                mySqliteHelper.getWritableDatabase().update("users", values, "account = ?", new String[]{userName});
+
+                handler.sendEmptyMessage(1);
+            } else {
+                handler.sendEmptyMessage(0);
             }
         }
     }

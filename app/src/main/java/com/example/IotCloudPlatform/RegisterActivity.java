@@ -73,6 +73,8 @@ public class RegisterActivity extends AppCompatActivity {
                     values.put("phone", phone);
                     values.put("email", email);
                     values.put("sex", sex);
+                    // 初始化默认登录状态
+                    values.put("login", "0");
                     //添加数据到数据库
                     long index = mySqliteHelper.getWritableDatabase().insert("users", null, values);
 
