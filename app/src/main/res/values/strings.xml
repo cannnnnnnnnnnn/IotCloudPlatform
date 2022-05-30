@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Iot cloud platform</string>
     <string name="welcome">欢迎使用智慧工厂应用</string>
-    <string name="version">版本 1.0</string>
+    <string name="version">版本 2.0</string>
     <string name="cancel">取消</string>
 
 
